@@ -10,7 +10,8 @@ import javax.persistence.Table;
 @Table(name = "Flughafen")
 public class Flughafen implements Serializable{
     String kuerzel;
-    String name;
+    String stadt;
+    String land;
 
     public Flughafen() {
     }
@@ -24,14 +25,20 @@ public class Flughafen implements Serializable{
         this.kuerzel = kuerzel;
     }
 
-    public String getName() {
-        return name;
+    public String getStadt() {
+        return stadt;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStadt(String stadt) {
+        this.stadt = stadt;
     }
-    
-    
-    
+
+    public String getLand() {
+        return land;
+    }
+
+    public void setLand(String land) {
+        this.land = land;
+    }
+
 }

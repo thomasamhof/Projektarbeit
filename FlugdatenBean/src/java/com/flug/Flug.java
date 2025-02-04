@@ -2,6 +2,7 @@
 package com.flug;
 
 import java.io.Serializable;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,15 +14,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Flug")
 public class Flug implements Serializable{
     int id;
-    String Start;
-    Flughafen flughafen;
-//    Flugzeug flugzeug;
+    Flughafen fhStart;
+    Flughafen fhLandung;
+    Flugzeug flugzeug;
+    Fluggesellschaft fluggesellschaft;
+    GregorianCalendar flugdatum;
+    double preis;
+    int dauer;
+    int linie;
+    int sitzeGes;       //Gesamtanzahl der Sitze
+    int sitzeBelegt;    //Anzahl der belegten Sitze
     List<Buchungsdaten> buchungsdaten;
 
     public Flug() {
@@ -37,33 +46,15 @@ public class Flug implements Serializable{
         this.id = id;
     }
 
-    public String getStart() {
-        return Start;
-    }
-
-    public void setStart(String Start) {
-        this.Start = Start;
-    }
-
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
       , fetch = FetchType.EAGER)
-    public Flughafen getFlughafen() {
-        return flughafen;
+    public Flugzeug getFlugzeug() {
+        return flugzeug;
     }
 
-    public void setFlughafen(Flughafen flughafen) {
-        this.flughafen = flughafen;
+    public void setFlugzeug(Flugzeug flugzeug) {
+        this.flugzeug = flugzeug;
     }
-
-//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-//      , fetch = FetchType.EAGER)
-//    public Flugzeug getFlugzeug() {
-//        return flugzeug;
-//    }
-//
-//    public void setFlugzeug(Flugzeug flugzeug) {
-//        this.flugzeug = flugzeug;
-//    }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
       , fetch = FetchType.EAGER)
@@ -75,6 +66,85 @@ public class Flug implements Serializable{
 
     public void setBuchungsdaten(List<Buchungsdaten> buchungsdaten) {
         this.buchungsdaten = buchungsdaten;
+    }
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+      , fetch = FetchType.EAGER)
+    public Flughafen getFhStart() {
+        return fhStart;
+    }
+
+    public void setFhStart(Flughafen fhStart) {
+        this.fhStart = fhStart;
+    }
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+      , fetch = FetchType.EAGER)
+    public Flughafen getFhLandung() {
+        return fhLandung;
+    }
+
+    public void setFhLandung(Flughafen fhLandung) {
+        this.fhLandung = fhLandung;
+    }
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+      , fetch = FetchType.EAGER)
+    public Fluggesellschaft getFluggesellschaft() {
+        return fluggesellschaft;
+    }
+
+    public void setFluggesellschaft(Fluggesellschaft fluggesellschaft) {
+        this.fluggesellschaft = fluggesellschaft;
+    }
+
+    public GregorianCalendar getFlugdatum() {
+        return flugdatum;
+    }
+
+    public void setFlugdatum(GregorianCalendar flugdatum) {
+        this.flugdatum = flugdatum;
+    }
+
+    public double getPreis() {
+        return preis;
+    }
+
+    public void setPreis(double preis) {
+        this.preis = preis;
+    }
+
+    public int getLinie() {
+        return linie;
+    }
+
+    public void setLinie(int linie) {
+        this.linie = linie;
+    }
+
+    public int getSitzeGes() {
+        return sitzeGes;
+    }
+
+    public void setSitzeGes(int sitzeGes) {
+        this.sitzeGes = sitzeGes;
+    }
+
+    public int getSitzeBelegt() {
+        return sitzeBelegt;
+    }
+
+    public void setSitzeBelegt(int sitzeBelegt) {
+        this.sitzeBelegt = sitzeBelegt;
+    }
+
+    public int getDauer() {
+        return dauer;
+    }
+
+    public void setDauer(String dauer) {
+        String[] dauerArray=dauer.split(":");
+        this.dauer=Integer.parseInt(dauerArray[0].trim())*60+Integer.parseInt(dauerArray[1]);
     }
     
 }

@@ -19,6 +19,7 @@ public class Buchungsdaten implements Serializable{
     int buchungsnr;
     GregorianCalendar buchungsdatum;
     int passagiernr;
+    List<Kunde> kunden;
 
     public Buchungsdaten() {
     }
@@ -35,7 +36,7 @@ public class Buchungsdaten implements Serializable{
 
     
     
-    @ManyToMany(mappedBy = "buchungsdaten")
+    @ManyToMany(mappedBy = "buchungsdaten_fluege")
     public List<Flug> getFluege() {
         return fluege;
     }
@@ -85,6 +86,15 @@ public class Buchungsdaten implements Serializable{
 
     public void setPassagiernr(int passagiernr) {
         this.passagiernr = passagiernr;
+    }
+
+    @ManyToMany (mappedBy = "buchungsdaten_kunden")
+    public List<Kunde> getKunden() {
+        return kunden;
+    }
+
+    public void setKunden(List<Kunde> kunden) {
+        this.kunden = kunden;
     }
     
 }
