@@ -54,6 +54,9 @@
     kunde.setOrt(daten[23]);
     kunde.setStrasse(daten[24]);
     kunde.setLand(daten[25]);
+    List<Buchungsdaten> listeBuchungenKunde=new ArrayList<Buchungsdaten>();
+    listeBuchungenKunde.add(buchung);
+    kunde.setBuchungen(listeBuchungenKunde);
     
     Flug flug=new Flug();
     flug.setFhStart(fhStart);
@@ -66,11 +69,11 @@
     String jahrFlug=datumFlug.substring(6);
     flug.setFlugdatum(new GregorianCalendar(Integer.parseInt(jahrFlug), Integer.parseInt(monatFlug), Integer.parseInt(tagFlug)));
     flug.setBuchungsdaten(listeBuchungenFlug);
-    flug.setDauer(daten[10]);
+    //flug.setDauer(daten[10]);
     flug.setPreis(Double.parseDouble(daten[12].trim()));
     flug.setSitzeBelegt(Integer.parseInt(daten[15].trim()));
     flug.setSitzeGes(Integer.parseInt(daten[16].trim()));
-    flug.setLinie(Integer.parseInt(daten[3].trim()));
+    //flug.setLinie(daten[3]);
     
     bean.datensatzEinlesen(flug);
     

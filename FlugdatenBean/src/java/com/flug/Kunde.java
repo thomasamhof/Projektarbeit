@@ -3,10 +3,14 @@ package com.flug;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -83,8 +87,10 @@ public class Kunde implements Serializable{
         this.land = land;
     }
 
-    @ManyToMany
-    (mappedBy = "kunde")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+      , fetch = FetchType.EAGER)
+     @JoinTable(name = "kunde_buchung", joinColumns = @JoinColumn(name = "kunde_id"),
+        inverseJoinColumns = @JoinColumn(name = "buchungsdaten_id"))
     public List<Buchungsdaten> getBuchungen() {
         return buchungen;
     }

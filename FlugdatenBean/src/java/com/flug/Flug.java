@@ -27,8 +27,8 @@ public class Flug implements Serializable{
     Fluggesellschaft fluggesellschaft;
     GregorianCalendar flugdatum;
     double preis;
-    int dauer;
-    int linie;
+//    int dauer;
+//    String linie;
     int sitzeGes;       //Gesamtanzahl der Sitze
     int sitzeBelegt;    //Anzahl der belegten Sitze
     List<Buchungsdaten> buchungsdaten;
@@ -114,13 +114,13 @@ public class Flug implements Serializable{
         this.preis = preis;
     }
 
-    public int getLinie() {
-        return linie;
-    }
-
-    public void setLinie(int linie) {
-        this.linie = linie;
-    }
+//    public String getLinie() {
+//        return linie;
+//    }
+//
+//    public void setLinie(String linie) {
+//        this.linie = linie;
+//    }
 
     public int getSitzeGes() {
         return sitzeGes;
@@ -138,13 +138,15 @@ public class Flug implements Serializable{
         this.sitzeBelegt = sitzeBelegt;
     }
 
-    public int getDauer() {
-        return dauer;
-    }
-
-    public void setDauer(String dauer) {
-        String[] dauerArray=dauer.split(":");
-        this.dauer=Integer.parseInt(dauerArray[0].trim())*60+Integer.parseInt(dauerArray[1]);
-    }
+//    public int getDauer() {
+//        return dauer;
+//    }
+//
+//    public void setDauer(String dauer) {
+//        String[] dauerArray=dauer.split(":");
+//        int std=Integer.parseInt(dauerArray[0].trim());
+//        int min=Integer.parseInt(dauerArray[1].trim());
+//        this.dauer=std;
+//    }
     
 }

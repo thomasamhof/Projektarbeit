@@ -36,7 +36,7 @@ public class Buchungsdaten implements Serializable{
 
     
     
-    @ManyToMany(mappedBy = "buchungsdaten_fluege")
+    @ManyToMany(mappedBy = "buchungsdaten")
     public List<Flug> getFluege() {
         return fluege;
     }
@@ -88,7 +88,7 @@ public class Buchungsdaten implements Serializable{
         this.passagiernr = passagiernr;
     }
 
-    @ManyToMany (mappedBy = "buchungsdaten_kunden")
+    @ManyToMany (mappedBy = "buchungen")
     public List<Kunde> getKunden() {
         return kunden;
     }
