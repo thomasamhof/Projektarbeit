@@ -17,7 +17,7 @@ public class Buchungsdaten implements Serializable{
     int id;
     List<Flug> fluege;
     int buchungsnr;
-    GregorianCalendar buchungsdatum;
+    String buchungsdatum;
     int passagiernr;
     List<Kunde> kunden;
 
@@ -72,11 +72,11 @@ public class Buchungsdaten implements Serializable{
         this.buchungsnr = buchungsnr;
     }
 
-    public GregorianCalendar getBuchungsdatum() {
+    public String getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(GregorianCalendar buchungsdatum) {
+    public void setBuchungsdatum(String buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 

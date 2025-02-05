@@ -25,7 +25,7 @@ public class Flug implements Serializable{
     Flughafen fhLandung;
     Flugzeug flugzeug;
     Fluggesellschaft fluggesellschaft;
-    GregorianCalendar flugdatum;
+    String flugdatum;
     double preis;
 //    int dauer;
 //    String linie;
@@ -98,11 +98,11 @@ public class Flug implements Serializable{
         this.fluggesellschaft = fluggesellschaft;
     }
 
-    public GregorianCalendar getFlugdatum() {
+    public String getFlugdatum() {
         return flugdatum;
     }
 
-    public void setFlugdatum(GregorianCalendar flugdatum) {
+    public void setFlugdatum(String flugdatum) {
         this.flugdatum = flugdatum;
     }
 
@@ -148,5 +148,10 @@ public class Flug implements Serializable{
 //        int min=Integer.parseInt(dauerArray[1].trim());
 //        this.dauer=std;
 //    }
+    
+    public String toString(){
+        String ausgabe=id+" "+buchungsdaten;
+        return ausgabe;
+    }
     
 }
