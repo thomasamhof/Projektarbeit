@@ -80,9 +80,9 @@
     bean.datensatzEinlesen(flug);*/
     
     //List<Flug> flugListe=bean.ausgeben();
-  //  Calendar kalender=new GregorianCalendar(2012, 9, 27);
-Flug flug1=bean.flugSuchen("FRA", "JFK","27.09.2012");
-//GregorianCalendar kalender=new GregorianCalendar(2012, 9, 27, 0, 0);
+    //Calendar kalender=new GregorianCalendar(2012, 9, 27);
+    Flug flug1=bean.flugSuchen("FRA", "JFK","27.09.2012");
+    //GregorianCalendar kalender=new GregorianCalendar(2012, 9, 27, 0, 0);
 %>
 
 <html>

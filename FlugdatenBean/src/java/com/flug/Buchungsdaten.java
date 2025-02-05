@@ -2,7 +2,6 @@
 package com.flug;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,8 +32,6 @@ public class Buchungsdaten implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
-    
     
     @ManyToMany(mappedBy = "buchungsdaten")
     public List<Flug> getFluege() {
@@ -45,24 +42,23 @@ public class Buchungsdaten implements Serializable{
         this.fluege = fluege;
     }
 
-    
-//    @Id
-//    public int getFlug() {
-//        return flug;
-//    }
-//
-//    public void setFlug(int flug) {
-//        this.flug = flug;
-//    }
+    //    @Id
+    //    public int getFlug() {
+    //        return flug;
+    //    }
+    //
+    //    public void setFlug(int flug) {
+    //        this.flug = flug;
+    //    }
 
-//    @Id
-//    public int getKunde() {
-//        return kunde;
-//    }
-//
-//    public void setKunde(int kunde) {
-//        this.kunde = kunde;
-//    }
+    //    @Id
+    //    public int getKunde() {
+    //        return kunde;
+    //    }
+    //
+    //    public void setKunde(int kunde) {
+    //        this.kunde = kunde;
+    //    }
 
     public int getBuchungsnr() {
         return buchungsnr;
@@ -96,5 +92,4 @@ public class Buchungsdaten implements Serializable{
     public void setKunden(List<Kunde> kunden) {
         this.kunden = kunden;
     }
-    
 }

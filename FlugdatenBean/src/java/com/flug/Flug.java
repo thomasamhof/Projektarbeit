@@ -2,7 +2,6 @@
 package com.flug;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -114,13 +113,13 @@ public class Flug implements Serializable{
         this.preis = preis;
     }
 
-//    public String getLinie() {
-//        return linie;
-//    }
-//
-//    public void setLinie(String linie) {
-//        this.linie = linie;
-//    }
+    //    public String getLinie() {
+    //        return linie;
+    //    }
+    //
+    //    public void setLinie(String linie) {
+    //        this.linie = linie;
+    //    }
 
     public int getSitzeGes() {
         return sitzeGes;
@@ -138,20 +137,19 @@ public class Flug implements Serializable{
         this.sitzeBelegt = sitzeBelegt;
     }
 
-//    public int getDauer() {
-//        return dauer;
-//    }
-//
-//    public void setDauer(String dauer) {
-//        String[] dauerArray=dauer.split(":");
-//        int std=Integer.parseInt(dauerArray[0].trim());
-//        int min=Integer.parseInt(dauerArray[1].trim());
-//        this.dauer=std;
-//    }
+    //    public int getDauer() {
+    //        return dauer;
+    //    }
+    //
+    //    public void setDauer(String dauer) {
+    //        String[] dauerArray=dauer.split(":");
+    //        int std=Integer.parseInt(dauerArray[0].trim());
+    //        int min=Integer.parseInt(dauerArray[1].trim());
+    //        this.dauer=std;
+    //    }
     
     public String toString(){
         String ausgabe=id+" "+buchungsdaten;
         return ausgabe;
     }
-    
 }

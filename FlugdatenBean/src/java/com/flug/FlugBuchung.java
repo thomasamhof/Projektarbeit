@@ -13,5 +13,4 @@ public class FlugBuchung implements Serializable {
         this.flugId = flugId;
         this.buchungsdatenId = buchungsdatenId;
     }
-
 }

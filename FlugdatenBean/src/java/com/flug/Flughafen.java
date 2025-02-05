@@ -40,5 +40,4 @@ public class Flughafen implements Serializable{
     public void setLand(String land) {
         this.land = land;
     }
-
 }
