@@ -23,11 +23,12 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     EntityManager entMan;
             
    public void datensatzEinlesen(Flug flug){
-       if (flugSuchen(flug.fhStart.kuerzel, flug.fhLandung.kuerzel, flug.flugdatum)!=null) {
-           entMan.persist(flug);
-       } else {
-           entMan.merge(flug);
-       }
+       entMan.persist(flug);
+//       if (flugSuchen(flug.fhStart.kuerzel, flug.fhLandung.kuerzel, flug.flugdatum)!=null) {
+//           entMan.persist(flug);
+//       } else {
+//           entMan.merge(flug);
+//       }
    }
     public List<Flug> ausgeben(){
         return entMan.createQuery("From Flug").getResultList();
