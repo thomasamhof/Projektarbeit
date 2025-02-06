@@ -44,4 +44,7 @@ public class Flugzeug implements Serializable{
         this.hersteller = hersteller;
     }
     
+    public String toString(){
+        return hersteller+" "+typ;
+    }
 }

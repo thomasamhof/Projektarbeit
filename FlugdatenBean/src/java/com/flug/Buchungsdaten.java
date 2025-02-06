@@ -3,6 +3,7 @@ package com.flug;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,12 +14,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Buchungsdaten")
 public class Buchungsdaten implements Serializable{
-    int id;
-    List<Flug> fluege;
-    int buchungsnr;
+    int id; //automatisch generierter PK
+    int buchungsnr; 
     String buchungsdatum;
-    int passagiernr;
-    List<Kunde> kunden;
 
     public Buchungsdaten() {
     }
@@ -33,33 +31,6 @@ public class Buchungsdaten implements Serializable{
         this.id = id;
     }
     
-    @ManyToMany(mappedBy = "buchungsdaten")
-    public List<Flug> getFluege() {
-        return fluege;
-    }
-
-    public void setFluege(List<Flug> fluege) {
-        this.fluege = fluege;
-    }
-
-    //    @Id
-    //    public int getFlug() {
-    //        return flug;
-    //    }
-    //
-    //    public void setFlug(int flug) {
-    //        this.flug = flug;
-    //    }
-
-    //    @Id
-    //    public int getKunde() {
-    //        return kunde;
-    //    }
-    //
-    //    public void setKunde(int kunde) {
-    //        this.kunde = kunde;
-    //    }
-
     public int getBuchungsnr() {
         return buchungsnr;
     }
@@ -74,22 +45,5 @@ public class Buchungsdaten implements Serializable{
 
     public void setBuchungsdatum(String buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
-    }
-
-    public int getPassagiernr() {
-        return passagiernr;
-    }
-
-    public void setPassagiernr(int passagiernr) {
-        this.passagiernr = passagiernr;
-    }
-
-    @ManyToMany (mappedBy = "buchungen")
-    public List<Kunde> getKunden() {
-        return kunden;
-    }
-
-    public void setKunden(List<Kunde> kunden) {
-        this.kunden = kunden;
     }
 }
