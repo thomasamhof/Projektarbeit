@@ -16,23 +16,35 @@
     String pfad = request.getParameter("pfad");
     if (button != null) {
         if (button.equals("einlesen")) {
-            datenEinlesen("C:\\Projektarbeit\\JL.csv");
-            out.println("ja");
+            datenEinlesen("C:\\Projektarbeit\\Test.csv");
         }
     }
+    List<Flug> liste=bean.ausgeben();
 %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            body {
+                height: 100vh;
+                width: 100vw;
+                padding: 20px;
+                background: lightblue;
+                color: darkblue;
+            }
+        </style>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Flugbuchungen</h1>
         <form action="index.jsp" method="get">
             <input type="text" name="pfad">
             <input type="submit" name="button" value="einlesen">
         </form>
+        <ul>
+            <%=liste%>
+        </ul>
     </body>
 </html>
 
