@@ -1,8 +1,6 @@
 
 package com.flug;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -17,5 +15,4 @@ public interface FlugdatenBeanRemote {
     Flugzeug flugzeugSuchen(String hersteller, String typ); 
     Flughafen flughafenSuchen(String kuerzel); 
     Fluggesellschaft fluggesellschaftSuchen(String kuerzel); 
-    
 }
