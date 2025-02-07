@@ -2,35 +2,32 @@
 package com.flug;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Kunde")
 public class Kunde implements Serializable{
-    int id;
+    int id; //die Passagiernummer wird als PK verwendet
     String anrede;
     String namen; //TODO sollte später noch atomar gemacht werden
     String plz;
     String ort;
     String strasse;
     String land;
-    List<Buchungsdaten> buchungen;
+    Set<Buchungsdaten> buchungen;
 
     public Kunde() {
+        buchungen=new HashSet<Buchungsdaten>();
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -87,16 +84,16 @@ public class Kunde implements Serializable{
         this.land = land;
     }
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-      , fetch = FetchType.EAGER)
-     @JoinTable(name = "kunde_buchung", joinColumns = @JoinColumn(name = "kunde_id"),
-        inverseJoinColumns = @JoinColumn(name = "buchungsdaten_id"))
-    public List<Buchungsdaten> getBuchungen() {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<Buchungsdaten> getBuchungen() {
         return buchungen;
     }
 
-    public void setBuchungen(List<Buchungsdaten> liste) {
+    public void setBuchungen(Set<Buchungsdaten> liste) {
         this.buchungen = liste;
     }
     
+    public void hinzuBuchungen(Buchungsdaten buchungsdaten){
+        this.buchungen.add(buchungsdaten);
+    }
 }

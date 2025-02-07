@@ -1,4 +1,3 @@
-
 package com.flug;
 
 import java.io.Serializable;
@@ -10,12 +9,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Flugzeug")
-public class Flugzeug implements Serializable{
+public class Flugzeug implements Serializable {
+
     int id;
     String typ;
     String hersteller;
 
     public Flugzeug() {
+
     }
 
     @Id
@@ -43,5 +44,9 @@ public class Flugzeug implements Serializable{
     public void setHersteller(String hersteller) {
         this.hersteller = hersteller;
     }
-    
+
+    @Override
+    public String toString() {
+        return hersteller + " " + typ;
+    }
 }

@@ -1,4 +1,3 @@
-
 package com.flug;
 
 import java.io.Serializable;
@@ -8,7 +7,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Flughafen")
-public class Flughafen implements Serializable{
+public class Flughafen implements Serializable {
+
     String kuerzel;
     String stadt;
     String land;
