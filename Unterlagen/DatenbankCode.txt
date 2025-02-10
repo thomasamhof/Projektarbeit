@@ -1,0 +1,46 @@
+Kunden
+-
+KdNr PK int
+Anrede string
+Name string 
+PLZ string
+Ort string
+Strasse string
+
+Buchungsdaten
+-
+KdNr int FK >- Kunden.KdNr
+ID int FK >- Flug.ID
+Buchungsnummer int
+Buchungsdatum date
+
+Flug 
+----
+ID PK int
+FlugzeugID FK >- Flugzeuge.FlugzeugID
+Start FK >- Flughafen.FhKuerzel string
+Ziel FK >- Flughafen.FhKuerzel string
+FGesells FK >- Fluggesellschaft.FgKuerzel string
+Dauer int
+Datum date
+Preis double
+SitzeBelegt int
+SitzeGesamt int
+Linie? string
+
+Flughafen
+----
+FhKuerzel PK string
+Land string
+Stadt string
+
+Flugzeuge
+----
+FlugzeugID PK int
+Typ string
+Hersteller string
+
+Fluggesellschaft
+----
+FgKuerzel PK string
+Name string
