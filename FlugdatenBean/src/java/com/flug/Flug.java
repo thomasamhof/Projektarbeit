@@ -1,8 +1,11 @@
 package com.flug;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
+import javafx.util.converter.LocalDateStringConverter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,10 +25,10 @@ public class Flug implements Serializable {
     Flughafen fhLandung; //Landungsflughafen
     Flugzeug flugzeug;
     Fluggesellschaft fluggesellschaft;
-    String flugdatum;
+    LocalDate flugdatum;
     double preis;
-    //    int dauer;
-    //    String linie;
+    //int dauer;
+    //String linie;
     int sitzeGes;       //Gesamtanzahl der Sitze
     int sitzeBelegt;    //Anzahl der belegten Sitze
     Set<Buchungsdaten> buchungsdaten;
@@ -95,11 +98,11 @@ public class Flug implements Serializable {
         this.fluggesellschaft = fluggesellschaft;
     }
 
-    public String getFlugdatum() {
+    public LocalDate getFlugdatum() {
         return flugdatum;
     }
 
-    public void setFlugdatum(String flugdatum) {
+    public void setFlugdatum(LocalDate flugdatum) {
         this.flugdatum = flugdatum;
     }
 

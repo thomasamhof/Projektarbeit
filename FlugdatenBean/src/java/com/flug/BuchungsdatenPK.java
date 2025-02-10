@@ -1,16 +1,17 @@
 package com.flug;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class BuchungsdatenPK implements Serializable {
 
     int buchungsnr;
-    String buchungsdatum;
+    LocalDate buchungsdatum;
 
     public BuchungsdatenPK() {
     }
 
-    public BuchungsdatenPK(int buchungsnr, String buchungsdatum) {
+    public BuchungsdatenPK(int buchungsnr, LocalDate buchungsdatum) {
         this.buchungsnr = buchungsnr;
         this.buchungsdatum = buchungsdatum;
     }
@@ -23,11 +24,11 @@ public class BuchungsdatenPK implements Serializable {
         this.buchungsnr = buchungsnr;
     }
 
-    public String getBuchungsdatum() {
+    public LocalDate getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(String buchungsdatum) {
+    public void setBuchungsdatum(LocalDate buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 

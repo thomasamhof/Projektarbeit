@@ -1,16 +1,20 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.flug.*,java.io.*,java.util.*, javax.naming.InitialContext,javax.naming.NamingException"%>
+<%@page import="com.flug.*,java.io.*,java.util.*, javax.naming.InitialContext, javax.naming.Context,javax.naming.NamingException"%>
 <!DOCTYPE html>
-<%  Properties props; %> 
-<%!    InitialContext ctx = null;
+<%! Properties props=null; 
+    InitialContext ctx = null;
     FlugdatenBeanRemote bean = null; %>
-<%    props = new Properties();
+<%  props = new Properties();  
+    props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+    props.put("jboss.naming.client.ejb.context", true);
+    props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+
     try {
         ctx = new InitialContext(props);
     } catch (NamingException ex) {
         ex.printStackTrace();
     }
-    bean = (FlugdatenBeanRemote) ctx.lookup("FlugdatenBean/remote");
+    bean = (FlugdatenBeanRemote) ctx.lookup("ejb:Projektarbeit/FlugdatenBean/FlugdatenBean!com.flug.FlugdatenBeanRemote");                                      
 
     String button = request.getParameter("button");
     String pfad = request.getParameter("pfad");
@@ -19,7 +23,15 @@
             datenEinlesen("C:\\Projektarbeit\\Test.csv");
         }
     }
-    List<Flug> liste=bean.ausgeben();
+    
+    //vorläufige Ausgabe
+    List<Flug> liste=null;
+    try {
+          liste=bean.ausgeben();  
+    } catch (NullPointerException npe) {
+            out.println("noch keine Daten vorhanden");
+    }
+    
 %>
 
 <html>
@@ -87,12 +99,12 @@
                     fluggesellschaft.setName(daten[1]);
                     bean.datensatzEinlesen(fluggesellschaft);
                 }
-                Buchungsdaten buchung = bean.buchungsdatenSuchen(Integer.parseInt(daten[16].trim()), daten[17].trim());
+                Buchungsdaten buchung = bean.buchungsdatenSuchen(Integer.parseInt(daten[16].trim()), bean.datumParsen(daten[17].trim()));
                 if (buchung == null) {
                     buchung = new Buchungsdaten();
                     buchung.setBuchungsnr(Integer.parseInt(daten[16].trim()));
                     String datumBuchung = daten[17].trim();
-                    buchung.setBuchungsdatum(datumBuchung);
+                    buchung.setBuchungsdatum(bean.datumParsen(datumBuchung));
                 }
                 Kunde kunde = bean.kundeSuchen(Integer.parseInt(daten[18]));
                 if (kunde == null) {
@@ -110,14 +122,14 @@
                     kunde.hinzuBuchungen(buchung);
                     bean.datensatzAktualisieren(kunde);
                 }
-                Flug flug = bean.flugSuchen(fhStart.getKuerzel(), fhLandung.getKuerzel(), daten[10].trim());
+                Flug flug = bean.flugSuchen(fhStart.getKuerzel(), fhLandung.getKuerzel(), bean.datumParsen(daten[10].trim()));
                 if (flug == null) {
                     flug = new Flug();
                     flug.setFhStart(bean.flughafenSuchen(fhStart.getKuerzel()));
                     flug.setFhLandung(bean.flughafenSuchen(fhLandung.getKuerzel()));
                     flug.hinzuBuchungsdaten(bean.buchungsdatenSuchen(buchung.getBuchungsnr(), buchung.getBuchungsdatum()));
                     String datumFlug = daten[10].trim();
-                    flug.setFlugdatum(datumFlug);
+                    flug.setFlugdatum(bean.datumParsen(datumFlug));
                     //flug.setDauer(daten[10]);
                     String preis = daten[11].trim();
                     preis = preis.replaceFirst("[.]", "");

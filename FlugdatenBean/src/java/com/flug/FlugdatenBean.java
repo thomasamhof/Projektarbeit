@@ -1,12 +1,16 @@
 
 package com.flug;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Stateless
+@Remote(FlugdatenBeanRemote.class)
 public class FlugdatenBean implements FlugdatenBeanRemote {
 
     @PersistenceContext(unitName = "FlugdatenPU")
@@ -32,7 +36,7 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     }
 
     @Override
-    public Flug flugSuchen(String start, String landung, String datum) {
+    public Flug flugSuchen(String start, String landung, LocalDate datum) {
         Flughafen fhStart = entMan.find(Flughafen.class, start);
         Flughafen fhLandung = entMan.find(Flughafen.class, landung);
         Flug flug = null;
@@ -66,7 +70,7 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     }
 
     @Override
-    public Buchungsdaten buchungsdatenSuchen(int buchungsnr, String buchungsdatum) {
+    public Buchungsdaten buchungsdatenSuchen(int buchungsnr, LocalDate buchungsdatum) {
         Buchungsdaten buchungsdaten = null;
         String query = "FROM Buchungsdaten b WHERE b.buchungsnr = :buchungsnr AND b.buchungsdatum = :datum";
         try {
@@ -101,5 +105,28 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     @Override
     public Fluggesellschaft fluggesellschaftSuchen(String kuerzel) {
         return entMan.find(Fluggesellschaft.class, kuerzel);
+    }
+    
+    //Zeit wird als String eingelesen und hier in ein LocalDate Format gespeichert
+    public LocalDate datumParsen(String datum){
+        DateTimeFormatter formi=DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate datumAusgabe=LocalDate.parse(datum, formi);
+        return datumAusgabe;
+    }
+    
+    public String datumParsen(LocalDate datum){
+        String datumString=datum.toString();
+        String ausgabe=datumString.substring(8)+"."+datumString.substring(5, 7)+"."+datumString.substring(0,4);
+        return ausgabe;
+    }
+    
+    //Zeit liegt im Format hh:min vor, mit der Methode wird die Zeit in min umgerechnet und so gespeichert
+    public int dauerParsen(String dauer){
+        String[] stdMin=dauer.split(":");
+        return Integer.parseInt(stdMin[0])*60+Integer.parseInt(stdMin[1]);
+    }
+    
+    public String dauerParsen(int dauer){
+        return (dauer/60+":"+dauer%60);
     }
 }

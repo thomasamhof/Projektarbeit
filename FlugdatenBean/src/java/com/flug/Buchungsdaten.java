@@ -2,6 +2,8 @@
 package com.flug;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -12,7 +14,7 @@ import javax.persistence.Table;
 @IdClass(BuchungsdatenPK.class)
 public class Buchungsdaten implements Serializable{
     int buchungsnr; 
-    String buchungsdatum;
+    LocalDate buchungsdatum;
 
     public Buchungsdaten() {
     }
@@ -27,11 +29,11 @@ public class Buchungsdaten implements Serializable{
     }
 
     @Id
-    public String getBuchungsdatum() {
+    public LocalDate getBuchungsdatum() {
         return buchungsdatum;
     }
 
-    public void setBuchungsdatum(String buchungsdatum) {
+    public void setBuchungsdatum(LocalDate buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
 }
