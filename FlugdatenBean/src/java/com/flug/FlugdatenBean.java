@@ -28,7 +28,10 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
 
     @Override
     public void datensatzAktualisieren(Object entitaet) {
-        entMan.merge(entitaet);
+        try {
+           entMan.merge(entitaet); 
+        } catch (Exception e) {
+        }
     }
 
     public List<Flug> ausgeben() {
@@ -81,6 +84,21 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
         }
 
         return buchungsdaten;
+    }
+    
+
+    public List<Kunde> buchungsdatenSuchenT() {
+//        List<Buchungsdaten> buchungsdaten = null;
+//        String query = "FROM Buchungsdaten b WHERE b.buchungsnr = :buchungsnr AND b.buchungsdatum = :datum";
+//        try {
+//            buchungsdaten =  entMan.createQuery(query, Buchungsdaten.class).setParameter("buchungsnr", buchungsnr)
+//                    .setParameter("datum", buchungsdatum).getResultList();
+//        } catch (Exception e) {
+//
+//        }
+//
+//        return buchungsdaten;
+            return entMan.createQuery("From Kunde").getResultList();
     }
 
     @Override

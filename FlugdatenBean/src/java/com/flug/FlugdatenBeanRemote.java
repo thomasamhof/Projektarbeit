@@ -13,6 +13,7 @@ public interface FlugdatenBeanRemote {
     Flug flugSuchen(String start, String landung, LocalDate datum); 
     Kunde kundeSuchen(int id); 
     Buchungsdaten buchungsdatenSuchen(int buchungsnr, LocalDate buchungsdatum); 
+    List<Kunde> buchungsdatenSuchenT();
     Flugzeug flugzeugSuchen(String hersteller, String typ); 
     Flughafen flughafenSuchen(String kuerzel); 
     Fluggesellschaft fluggesellschaftSuchen(String kuerzel); 

@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -36,4 +37,10 @@ public class Buchungsdaten implements Serializable{
     public void setBuchungsdatum(LocalDate buchungsdatum) {
         this.buchungsdatum = buchungsdatum;
     }
+    
+    @Override
+    public String toString(){
+        return buchungsdatum.toString()+" "+buchungsnr;
+    }
+
 }

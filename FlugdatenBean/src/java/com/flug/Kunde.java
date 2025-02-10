@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Kunde implements Serializable{
     int id; //die Passagiernummer wird als PK verwendet
     String anrede;
-    String namen; //TODO sollte später noch atomar gemacht werden
+    String name; //TODO sollte später noch atomar gemacht werden
     String plz;
     String ort;
     String strasse;
@@ -44,12 +44,12 @@ public class Kunde implements Serializable{
         this.anrede = anrede;
     }
 
-    public String getNamen() {
-        return namen;
+    public String getName() {
+        return name;
     }
 
-    public void setNamen(String namen) {
-        this.namen = namen;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPlz() {
@@ -84,7 +84,7 @@ public class Kunde implements Serializable{
         this.land = land;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     public Set<Buchungsdaten> getBuchungen() {
         return buchungen;
     }
@@ -93,7 +93,16 @@ public class Kunde implements Serializable{
         this.buchungen = liste;
     }
     
-    public void hinzuBuchungen(Buchungsdaten buchungsdaten){
-        this.buchungen.add(buchungsdaten);
+    public boolean hinzuBuchungen(Buchungsdaten buchungsdaten){
+        return this.buchungen.add(buchungsdaten);
+    }
+    
+    @Override
+    public String toString(){
+        String ausgabe = id+" "+name+": ";
+        for (Buchungsdaten buchung : buchungen) {
+            ausgabe= ausgabe+buchung+", ";
+        }
+        return ausgabe;
     }
 }

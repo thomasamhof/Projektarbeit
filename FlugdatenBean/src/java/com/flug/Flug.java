@@ -27,8 +27,8 @@ public class Flug implements Serializable {
     Fluggesellschaft fluggesellschaft;
     LocalDate flugdatum;
     double preis;
-    //int dauer;
-    //String linie;
+    int dauer;
+    String linie;
     int sitzeGes;       //Gesamtanzahl der Sitze
     int sitzeBelegt;    //Anzahl der belegten Sitze
     Set<Buchungsdaten> buchungsdaten;
@@ -66,8 +66,8 @@ public class Flug implements Serializable {
         this.buchungsdaten = buchungsdaten;
     }
 
-    public void hinzuBuchungsdaten(Buchungsdaten buchungsdaten) {
-        this.buchungsdaten.add(buchungsdaten);
+    public boolean hinzuBuchungsdaten(Buchungsdaten buchungsdaten) {
+        return this.buchungsdaten.add(buchungsdaten);
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -114,13 +114,13 @@ public class Flug implements Serializable {
         this.preis = preis;
     }
 
-    //    public String getLinie() {
-    //        return linie;
-    //    }
-    //
-    //    public void setLinie(String linie) {
-    //        this.linie = linie;
-    //    }
+    public String getLinie() {
+         return linie;
+    }
+    
+    public void setLinie(String linie) {
+        this.linie = linie;
+    }
     
     public int getSitzeGes() {
         return sitzeGes;
@@ -138,16 +138,13 @@ public class Flug implements Serializable {
         this.sitzeBelegt = sitzeBelegt;
     }
 
-    //    public int getDauer() {
-    //        return dauer;
-    //    }
-    //
-    //    public void setDauer(String dauer) {
-    //        String[] dauerArray=dauer.split(":");
-    //        int std=Integer.parseInt(dauerArray[0].trim());
-    //        int min=Integer.parseInt(dauerArray[1].trim());
-    //        this.dauer=std;
-    //    }
+    public int getDauer() {
+        return dauer;
+    }
+    
+    public void setDauer(int dauer) {
+        this.dauer=dauer;
+    }
     
     @Override
     public String toString() {
