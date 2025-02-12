@@ -33,14 +33,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Flugbuchungen</title>
         <style>
             body {
-                height: 100vh;
-                width: 100vw;
+                min-height: 100vh;
+                max-width: 100vw;
                 padding: 20px;
                 background: lightblue;
                 color: darkblue;
+            }
+
+            ul {
+                padding: 0;
             }
         </style>
     </head>
