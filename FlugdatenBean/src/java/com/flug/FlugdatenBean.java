@@ -16,22 +16,20 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     @PersistenceContext(unitName = "FlugdatenPU")
     EntityManager entMan;
 
+    @Override
     public void datensatzEinlesen(Object entitaet) {
         //0-Startfh 1-Landefh 2-Flugzeug 3-Fluggesellschaft
         //4-Buchungsdaten 5-Kunde 6-Flug
         try {
             entMan.persist(entitaet);
         } catch (Exception e) {
-            System.out.println("wir-" + e.getMessage() + " - " + e.toString());
+            
         }
     }
 
     @Override
     public void datensatzAktualisieren(Object entitaet) {
-        try {
            entMan.merge(entitaet); 
-        } catch (Exception e) {
-        }
     }
 
     public List<Flug> ausgeben() {
@@ -79,8 +77,9 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
         try {
             buchungsdaten = (Buchungsdaten) entMan.createQuery(query, Buchungsdaten.class).setParameter("buchungsnr", buchungsnr)
                     .setParameter("datum", buchungsdatum).getSingleResult();
+            System.out.println("buchung gef");
         } catch (Exception e) {
-
+            System.out.println("buchung n");
         }
 
         return buchungsdaten;
@@ -127,9 +126,16 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
     
     //Zeit wird als String eingelesen und hier in ein LocalDate Format gespeichert
     public LocalDate datumParsen(String datum){
-        DateTimeFormatter formi=DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter formi=null;
+        if (datum.length()>10) {
+            datum=datum.substring(0, 10);
+            formi=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        } else{
+            formi=DateTimeFormatter.ofPattern("dd.MM.yyyy"); 
+        }
         LocalDate datumAusgabe=LocalDate.parse(datum, formi);
         return datumAusgabe;
+        
     }
     
     public String datumParsen(LocalDate datum){
