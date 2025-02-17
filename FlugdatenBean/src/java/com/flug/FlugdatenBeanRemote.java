@@ -9,6 +9,7 @@ import javax.ejb.Remote;
 public interface FlugdatenBeanRemote {  
     void datensatzEinlesen(Object entitaet);
     void datensatzAktualisieren(Object entitaet);
+    void testDatensatzLoeschen();
     List<Flug> ausgeben();
     Flug flugSuchen(String start, String landung, LocalDate datum); 
     Kunde kundeSuchen(int id); 

@@ -32,6 +32,11 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
            entMan.merge(entitaet); 
     }
 
+    @Override
+    public void testDatensatzLoeschen() {
+           entMan.createNativeQuery("DELETE FROM flugzeug WHERE typ = 'Concorde';").executeUpdate();;
+    }
+
     public List<Flug> ausgeben() {
         return entMan.createQuery("From Flug").getResultList();
     }

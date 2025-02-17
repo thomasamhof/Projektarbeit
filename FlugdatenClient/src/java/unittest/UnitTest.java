@@ -1,99 +1,41 @@
-<%@page import="unittest.UnitTest"%>
-<%@page import="com.aspose.cells.*"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.flug.*,java.io.*,java.util.*, javax.naming.InitialContext, javax.naming.Context,javax.naming.NamingException"%>
-<!DOCTYPE html>
-<%! Properties props = null;
-    InitialContext ctx = null;
-    FlugdatenBeanRemote bean = null;
-    int zaehlerNeuerKunde;  //Anzahl neu angelegter Kunde
-    int zaehlerNeuerFlug;   //Anzahl neu angelegter Flüge
-    int zaehlerDatensatz;
-%>
-<%  props = new Properties();
-    props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-    props.put("jboss.naming.client.ejb.context", true);
-    props.put(Context.PROVIDER_URL, "http-remoting://localhost:8080");
+package unittest;
 
-    try {
-        ctx = new InitialContext(props);
-    } catch (NamingException ex) {
-        ex.printStackTrace();
+import com.flug.*;
+import com.aspose.cells.*;
+
+public class UnitTest {
+    public static void check(FlugdatenBeanRemote bean) throws Exception {
+    // Arange
+    Boolean vorEinlesenVorhanden, nachEinlesenVorhanden;
+    Flugzeug testFlugzeug = new Flugzeug();
+    testFlugzeug.setHersteller("Aerospatiale");
+    testFlugzeug.setTyp("Concorde");
+    vorEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
+
+    // Act
+    if (bean.flugzeugSuchen("Aerospatiale", "Concorde") == null) {
+       bean.datensatzEinlesen(testFlugzeug); 
     }
-    bean = (FlugdatenBeanRemote) ctx.lookup("ejb:Projektarbeit/FlugdatenBean/FlugdatenBean!com.flug.FlugdatenBeanRemote");
-
-    String button = request.getParameter("button");
-    String pfad = request.getParameter("pfad");
-
-    //vorläufige Ausgabe
-    List<Flug> liste = null;
-%>
-
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Flugbuchungen</title>
-        <style>
-            body {
-                min-height: 100vh;
-                max-width: 100vw;
-                padding: 20px;
-                background: lightblue;
-                color: darkblue;
-            }
-
-            ul {
-                padding: 0;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Flugbuchungen</h1>
-        <form action="index.jsp" method="get">
-            <input type="text" name="pfad" value="Pfad angeben">
-            <input type="submit" name="button" value="einlesen">
-        </form>
-        <% if (button != null && !pfad.equals("Pfad angeben")) {
-                if (button.equals("einlesen") && !pfad.equals("test")) {
-                    dateiPruefen(pfad);
-                    String ausgabe = String.format("Es wurden %d Datensätze eingelesen<br>dabei wurden %d Flüge und %d Kunden angelegt", zaehlerDatensatz, zaehlerNeuerFlug, zaehlerNeuerKunde);
-                    out.println(ausgabe);
-                } else {
-                    UnitTest.check(bean);
-                }
-            }%>
-
-        <ul>
-            <%
-                try {
-                    liste = bean.ausgeben();
-                } catch (NullPointerException npe) {
-                    out.println("noch keine Daten vorhanden");
-                }%>
-            <%=liste%>
-        </ul>
-    </body>
-</html>
-
-<%! public void dateiPruefen(String pfad) {
-        zaehlerNeuerKunde = 0;  //Anzahl neu angelegter Kunde
-        zaehlerNeuerFlug = 0;   //Anzahl neu angelegter Flüge
-        zaehlerDatensatz = 0;
-        try {
-            if (pfad.substring(pfad.lastIndexOf(".")).equals(".xls")) {
-                xlsEinlesen(pfad);
-            } else if (pfad.substring(pfad.lastIndexOf(".")).equals(".csv")) {
-                csvEinlesen(pfad);
-            } else {
-                //unbekanntest Dateiformat
-            }
-        } catch (Exception e) {
+    
+    nachEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
+    
+    // Assert
+        System.out.println("****** TEST ******");
+        System.out.println("Vor Einlesen vorhanden: " + vorEinlesenVorhanden);
+        System.out.println("Nach Einlesen vorhanden: " + nachEinlesenVorhanden);
+        
+        if (!vorEinlesenVorhanden && nachEinlesenVorhanden) {
+            System.out.println("DER TEST WAR ERFOLGREICH!!!");
+        } else {
+            System.out.println("DER TEST WAR NICHT ERFOLGREICH!!!");
         }
+        System.out.println("******************");
+        
+        bean.testDatensatzLoeschen();
     }
-
-    public String datenEinlesen(String[] daten) { //Daten werden aus .csv eingelesen und in Object[] zurückgegeben
+    
+    public static String datenEinlesen(String[] daten, FlugdatenBeanRemote bean) { //Daten werden aus .csv eingelesen und in Object[] zurückgegeben
         try {
-
             Fluggesellschaft fluggesellschaft = bean.fluggesellschaftSuchen(daten[0]);
             if (fluggesellschaft == null) {
                 fluggesellschaft = new Fluggesellschaft();
@@ -147,7 +89,6 @@
                 kunde.setLand(daten[24]);
                 kunde.hinzuBuchungen(buchung);
                 bean.datensatzEinlesen(kunde);
-                zaehlerNeuerKunde++;
             } else {
                 kunde.hinzuBuchungen(buchung);
                 bean.datensatzAktualisieren(kunde);
@@ -171,12 +112,10 @@
                 flug.setFluggesellschaft(bean.fluggesellschaftSuchen(fluggesellschaft.getKuerzel()));
                 flug.setFlugzeug(bean.flugzeugSuchen(flugzeug.getHersteller(), flugzeug.getTyp()));
                 bean.datensatzEinlesen(flug);
-                zaehlerNeuerFlug++;
             } else {
                 flug.hinzuBuchungsdaten(buchung);
                 bean.datensatzAktualisieren(flug);
             }
-            zaehlerDatensatz++;
         } catch (Exception e) {
             //ausgabe = "Unerwarteter Fehler" + e.getMessage();
             System.out.println("hier");
@@ -184,8 +123,8 @@
         System.out.println("nach dem catch");
         return "";
     }
-%>
-<%! public void xlsEinlesen(String pfad) throws Exception {
+
+    public static void xlsEinlesen(String pfad, FlugdatenBeanRemote bean) throws Exception {
         Workbook buch = new Workbook(pfad);
         WorksheetCollection worksheets = buch.getWorksheets();    //hier werden die einzelnen Tabellen ausgelesen
         Worksheet tabelle = worksheets.get(0);
@@ -199,32 +138,7 @@
                 daten[j] = (String.valueOf(tabelle.getCells().get(i, j).getValue())).trim();
 
             }
-            datenEinlesen(daten);
+            datenEinlesen(daten, bean);
         }
     }
-
-    public void csvEinlesen(String pfad) {
-        BufferedReader buffi = null;
-        String[] daten = new String[25];
-        String zeile = "";
-        try {
-            buffi = new BufferedReader(new FileReader(pfad));
-            while ((zeile = buffi.readLine()) != null) {
-                daten = zeile.split(";");
-                daten[0] = daten[0].replaceAll("[^A-Z]", "");
-                if (!daten[0].matches("[A-Z]{2}") || daten[0].equals("ID")) {
-                    continue;
-                }
-                for (String string : daten) {
-                    string = string.trim();
-                }
-                datenEinlesen(daten);
-
-            }
-        } catch (FileNotFoundException fnfe) {
-
-        } catch (Exception e) {
-
-        }
-    }
-%>
+}
