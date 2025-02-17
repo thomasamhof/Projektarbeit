@@ -85,13 +85,13 @@
             } else if (pfad.substring(pfad.lastIndexOf(".")).equals(".csv")) {
                 csvEinlesen(pfad);
             } else {
-                //unbekanntest Dateiformat
+                System.out.println("Unbekanntes Dateiformat");
             }
         } catch (Exception e) {
         }
     }
 
-    public String datenEinlesen(String[] daten) { //Daten werden aus .csv eingelesen und in Object[] zurückgegeben
+    public void datenEinlesen(String[] daten) { 
         try {
 
             Fluggesellschaft fluggesellschaft = bean.fluggesellschaftSuchen(daten[0]);
@@ -163,7 +163,6 @@
                 flug.setDauer(bean.dauerParsen(daten[9]));
                 flug.setLinie(daten[2]);
                 String preis = daten[11];
-                //preis = preis.replaceFirst("[.]", "");
                 preis = preis.replace(',', '.');
                 flug.setPreis((Double.parseDouble(preis)));
                 flug.setSitzeBelegt(Integer.parseInt(daten[14].substring(0, daten[14].lastIndexOf("."))));
@@ -178,11 +177,8 @@
             }
             zaehlerDatensatz++;
         } catch (Exception e) {
-            //ausgabe = "Unerwarteter Fehler" + e.getMessage();
-            System.out.println("hier");
+            
         }
-        System.out.println("nach dem catch");
-        return "";
     }
 %>
 <%! public void xlsEinlesen(String pfad) throws Exception {
@@ -197,7 +193,6 @@
             }
             for (int j = 1; j < tabelle.getCells().getMaxDataColumn(); j++) {
                 daten[j] = (String.valueOf(tabelle.getCells().get(i, j).getValue())).trim();
-
             }
             datenEinlesen(daten);
         }
@@ -219,7 +214,6 @@
                     string = string.trim();
                 }
                 datenEinlesen(daten);
-
             }
         } catch (FileNotFoundException fnfe) {
 

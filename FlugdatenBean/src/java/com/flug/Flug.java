@@ -17,7 +17,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Flug")
 public class Flug implements Serializable {
-
     int id;
     Flughafen fhStart; //Startflughafen
     Flughafen fhLandung; //Landungsflughafen

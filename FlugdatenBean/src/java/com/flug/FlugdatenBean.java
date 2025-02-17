@@ -18,8 +18,6 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
 
     @Override
     public void datensatzEinlesen(Object entitaet) {
-        //0-Startfh 1-Landefh 2-Flugzeug 3-Fluggesellschaft
-        //4-Buchungsdaten 5-Kunde 6-Flug
         try {
             entMan.persist(entitaet);
         } catch (Exception e) {
@@ -64,7 +62,7 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
             flug = (Flug) entMan.createQuery(query, Flug.class).setParameter("start", gesuchterflug.fhStart)
                     .setParameter("landung", gesuchterflug.fhLandung).setParameter("datum", gesuchterflug.flugdatum).getSingleResult();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            
         }
         
         return flug;
@@ -82,27 +80,11 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
         try {
             buchungsdaten = (Buchungsdaten) entMan.createQuery(query, Buchungsdaten.class).setParameter("buchungsnr", buchungsnr)
                     .setParameter("datum", buchungsdatum).getSingleResult();
-            System.out.println("buchung gef");
         } catch (Exception e) {
-            System.out.println("buchung n");
+
         }
 
         return buchungsdaten;
-    }
-    
-
-    public List<Kunde> buchungsdatenSuchenT() {
-//        List<Buchungsdaten> buchungsdaten = null;
-//        String query = "FROM Buchungsdaten b WHERE b.buchungsnr = :buchungsnr AND b.buchungsdatum = :datum";
-//        try {
-//            buchungsdaten =  entMan.createQuery(query, Buchungsdaten.class).setParameter("buchungsnr", buchungsnr)
-//                    .setParameter("datum", buchungsdatum).getResultList();
-//        } catch (Exception e) {
-//
-//        }
-//
-//        return buchungsdaten;
-            return entMan.createQuery("From Kunde").getResultList();
     }
 
     @Override
@@ -113,7 +95,7 @@ public class FlugdatenBean implements FlugdatenBeanRemote {
             flugzeug = (Flugzeug) entMan.createQuery(query, Flugzeug.class).setParameter("typ", typ)
                     .setParameter("hersteller", hersteller).getSingleResult();
         } catch (Exception e) {
-            System.out.println("wir: " + e.getMessage());
+
         }
         
         return flugzeug;

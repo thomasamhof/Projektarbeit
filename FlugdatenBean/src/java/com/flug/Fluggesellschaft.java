@@ -8,7 +8,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Fluggesellschaft")
 public class Fluggesellschaft implements Serializable {
-
     String kuerzel;
     String name;
 

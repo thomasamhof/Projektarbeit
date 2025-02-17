@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class BuchungsdatenPK implements Serializable {
-
     int buchungsnr;
     LocalDate buchungsdatum;
 
