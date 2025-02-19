@@ -145,7 +145,7 @@ public class Flug implements Serializable {
     
     @Override
     public String toString() {
-        String ausgabe = id + " von " + fhStart.stadt + " nach " + fhLandung.stadt + "</br>";
+        String ausgabe = "Flugnr: "+id+" mit "+fluggesellschaft + " von " + fhStart.stadt + " nach " + fhLandung.stadt + "</br>";
         return ausgabe;
     }
 }

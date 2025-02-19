@@ -4,36 +4,43 @@ import com.flug.*;
 import com.aspose.cells.*;
 
 public class UnitTest {
-    public static void check(FlugdatenBeanRemote bean) throws Exception {
-    // Arange
-    Boolean vorEinlesenVorhanden, nachEinlesenVorhanden;
-    Flugzeug testFlugzeug = new Flugzeug();
-    testFlugzeug.setHersteller("Aerospatiale");
-    testFlugzeug.setTyp("Concorde");
-    vorEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
 
-    // Act
-    if (bean.flugzeugSuchen("Aerospatiale", "Concorde") == null) {
-       bean.datensatzEinlesen(testFlugzeug); 
-    }
-    
-    nachEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
-    
-    // Assert
+    public static String check(FlugdatenBeanRemote bean) throws Exception {
+        // Arange
+        Boolean vorEinlesenVorhanden, nachEinlesenVorhanden;
+        Flugzeug testFlugzeug = new Flugzeug();
+        testFlugzeug.setHersteller("Aerospatiale");
+        testFlugzeug.setTyp("Concorde");
+        vorEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
+        String ausgabe = "";
+
+        // Act
+        if (bean.flugzeugSuchen("Aerospatiale", "Concorde") == null) {
+            bean.datensatzEinlesen(testFlugzeug);
+        }
+        
+        nachEinlesenVorhanden = bean.flugzeugSuchen("Aerospatiale", "Concorde") != null;
+
+        // Assert
         System.out.println("****** TEST ******");
         System.out.println("Vor Einlesen vorhanden: " + vorEinlesenVorhanden);
         System.out.println("Nach Einlesen vorhanden: " + nachEinlesenVorhanden);
-        
+        ausgabe = "****** Datenbank TEST ******<br>" + "Testdatensatz vor Einlesen vorhanden: " + vorEinlesenVorhanden + "<br>Testdatensatz wird eingespielt<br>Testdatensatz nach Einlesen vorhanden: " + nachEinlesenVorhanden;
+
         if (!vorEinlesenVorhanden && nachEinlesenVorhanden) {
             System.out.println("DER TEST WAR ERFOLGREICH!!!");
+            ausgabe = ausgabe.concat("<br>DER TEST WAR ERFOLGREICH!!!");
         } else {
             System.out.println("DER TEST WAR NICHT ERFOLGREICH!!!");
+            ausgabe = ausgabe.concat("<br>DER TEST WAR NICHT ERFOLGREICH!!!");
         }
         System.out.println("******************");
-        
+        ausgabe = ausgabe.concat("<br>******************");
+
         bean.testDatensatzLoeschen();
+        return ausgabe;
     }
-    
+
     public static String datenEinlesen(String[] daten, FlugdatenBeanRemote bean) { //Daten werden aus .csv eingelesen und in Object[] zurückgegeben
         try {
             Fluggesellschaft fluggesellschaft = bean.fluggesellschaftSuchen(daten[0]);

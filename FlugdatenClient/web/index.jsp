@@ -8,7 +8,12 @@
     FlugdatenBeanRemote bean = null;
     int zaehlerNeuerKunde;  //Anzahl neu angelegter Kunde
     int zaehlerNeuerFlug;   //Anzahl neu angelegter Flüge
-    int zaehlerDatensatz;
+    int zaehlerNeuerFlughafen;   //Anzahl neu angelegter Flughäfen
+    int zaehlerNeuesFlugzeug;   //Anzahl neu angelegter Flugzeuge
+    int zaehlerNeueFluggesellschaft;   //Anzahl neu angelegter Fluggesellschaften
+    int zaehlerNeueBuchung;   //Anzahl neu angelegter Buchungen
+    int zaehlerDatensatz; // wie viele Datensätze wurden eingelesen
+    HashMap<Integer, Flug> liste = new HashMap<Integer, Flug>();
 %>
 <%  props = new Properties();
     props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
@@ -25,8 +30,6 @@
     String button = request.getParameter("button");
     String pfad = request.getParameter("pfad");
 
-    //vorläufige Ausgabe
-    List<Flug> liste = null;
 %>
 
 <html>
@@ -35,15 +38,70 @@
         <title>Flugbuchungen</title>
         <style>
             body {
-                min-height: 100vh;
-                max-width: 100vw;
-                padding: 20px;
-                background: lightblue;
-                color: darkblue;
+                height: 100vh;
+                width: 100vw;
+                margin: 0;
+                background-image: url("https://images.pexels.com/photos/912050/pexels-photo-912050.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
+                background-position: center;
+                background-size: cover;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                flex-direction: column;
+                
             }
 
-            ul {
-                padding: 0;
+            .app-wrapper {
+                color: white;
+            }
+
+            input {
+                padding: 4px;
+            }
+
+            h1 {
+                font-style: italic;
+                color: lightcyan;
+            }
+
+            /* Der Hintergrund des Modals */
+            .modal {
+                display: none; /* Versteckt das Modal standardmäßig */
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4); /* Schwarzer Hintergrund mit Transparenz */
+            }
+
+            /* Das Modal-Inhalt */
+            .modal-content {
+                background-color: #fff;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 650px;
+                overflow-y: auto;
+                max-height: 50vh;
+            }
+
+            /* Schließen Button */
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -52,33 +110,76 @@
         <form action="index.jsp" method="get">
             <input type="text" name="pfad" value="Pfad angeben">
             <input type="submit" name="button" value="einlesen">
-        </form>
-        <% if (button != null && !pfad.equals("Pfad angeben")) {
-                if (button.equals("einlesen") && !pfad.equals("test")) {
-                    dateiPruefen(pfad);
-                    String ausgabe = String.format("Es wurden %d Datensätze eingelesen<br>dabei wurden %d Flüge und %d Kunden angelegt", zaehlerDatensatz, zaehlerNeuerFlug, zaehlerNeuerKunde);
-                    out.println(ausgabe);
-                } else {
-                    UnitTest.check(bean);
-                }
-            }%>
+        </form><br>
 
-        <ul>
-            <%
-                try {
-                    liste = bean.ausgeben();
-                } catch (NullPointerException npe) {
-                    out.println("noch keine Daten vorhanden");
-                }%>
-            <%=liste%>
-        </ul>
+        <!-- Button, um das Modal zu öffnen -->
+		<button id="openModalBtn">Daten anzeigen</button>
+        <!-- Das Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal-Inhalt -->
+            <div class="modal-content">
+                <span class="close" id="closeModalBtn">&times;</span>
+                <p>
+                    <% if (button != null && !pfad.equals("Pfad angeben")) {
+                            if (button.equals("einlesen") && !pfad.equals("test")) {
+                                dateiPruefen(pfad);
+                                String ausgabe
+                                        = String.format("Es wurden %d Datensätze eingelesen<br>"
+                                                + "%d Flüge wurden hinzugefügt<br>"
+                                                + "%d Kunden wurden hinzugefügt<br>"
+                                                + "%d Airlines wurden hinzugefügt<br>"
+                                                + "%d Flughäfen wurden hinzugefügt<br>"
+                                                + "%d Fluzeuge wurden hinzugefügt<br>"
+                                                + "%d Buchungen wurden hinzugefügt<br>"
+                                                + "<br>Folgende Flüge waren vorhanden und wurden aktualisiert:<br>", zaehlerDatensatz, zaehlerNeuerFlug, zaehlerNeuerKunde, zaehlerNeueFluggesellschaft, zaehlerNeuerFlughafen, zaehlerNeuesFlugzeug, zaehlerNeueBuchung);
+                                out.println(ausgabe);
+                                Iterator<Map.Entry<Integer, Flug>> itti = liste.entrySet().iterator();
+                                while (itti.hasNext()) {
+                                    out.println(itti.next().getValue());
+                                }
+                            } else {
+                                out.print(UnitTest.check(bean));
+                            }
+                        }%>
+                </p>
+            </div>
+        </div>
+        <script>
+            // Modal-Elemente
+            var modal = document.getElementById("myModal");
+            var openModalBtn = document.getElementById("openModalBtn");
+            var closeModalBtn = document.getElementById("closeModalBtn");
+
+            // Öffne das Modal, wenn der Button geklickt wird
+            openModalBtn.onclick = function () {
+                modal.style.display = "block";
+            }
+
+            // Schließe das Modal, wenn der Schließen-Button geklickt wird
+            closeModalBtn.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // Schließe das Modal, wenn außerhalb des Modals geklickt wird
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>
+
     </body>
 </html>
 
 <%! public void dateiPruefen(String pfad) {
         zaehlerNeuerKunde = 0;  //Anzahl neu angelegter Kunde
         zaehlerNeuerFlug = 0;   //Anzahl neu angelegter Flüge
+        zaehlerNeueFluggesellschaft = 0;
+        zaehlerNeuerFlughafen = 0;
+        zaehlerNeuesFlugzeug = 0;
+        zaehlerNeueBuchung = 0;
         zaehlerDatensatz = 0;
+        liste.clear();
         try {
             if (pfad.substring(pfad.lastIndexOf(".")).equals(".xls")) {
                 xlsEinlesen(pfad);
@@ -91,15 +192,16 @@
         }
     }
 
-    public void datenEinlesen(String[] daten) { 
+    public void datenEinlesen(String[] daten) {
         try {
-
+            zaehlerDatensatz++;
             Fluggesellschaft fluggesellschaft = bean.fluggesellschaftSuchen(daten[0]);
             if (fluggesellschaft == null) {
                 fluggesellschaft = new Fluggesellschaft();
                 fluggesellschaft.setKuerzel(daten[0]);
                 fluggesellschaft.setName(daten[1]);
                 bean.datensatzEinlesen(fluggesellschaft);
+                zaehlerNeueFluggesellschaft++;
             }
             Flughafen fhStart = bean.flughafenSuchen(daten[3]);
             if (fhStart == null) {
@@ -108,6 +210,7 @@
                 fhStart.setLand(daten[4]);
                 fhStart.setStadt(daten[5]);
                 bean.datensatzEinlesen(fhStart);
+                zaehlerNeuerFlughafen++;
             }
             Flughafen fhLandung = bean.flughafenSuchen(daten[6]);
             if (fhLandung == null) {
@@ -116,6 +219,7 @@
                 fhLandung.setLand(daten[7]);
                 fhLandung.setStadt(daten[8]);
                 bean.datensatzEinlesen(fhLandung);
+                zaehlerNeuerFlughafen++;
             }
             Flugzeug flugzeug = bean.flugzeugSuchen(daten[13], daten[12]);
             if (flugzeug == null) {
@@ -123,6 +227,7 @@
                 flugzeug.setTyp(daten[12]);
                 flugzeug.setHersteller(daten[13]);
                 bean.datensatzEinlesen(flugzeug);
+                zaehlerNeuesFlugzeug++;
             }
             System.out.println("vor Buchung");
             Buchungsdaten buchung = bean.buchungsdatenSuchen(Integer.parseInt(daten[16].substring(0, daten[16].lastIndexOf("."))), bean.datumParsen(daten[17]));
@@ -133,6 +238,7 @@
                 System.out.println("zwischen");
                 buchung.setBuchungsdatum(bean.datumParsen(daten[17]));
                 bean.datensatzEinlesen(buchung);
+                zaehlerNeueBuchung++;
             }
             System.out.println("nach Buchung");
             Kunde kunde = bean.kundeSuchen(Integer.parseInt(daten[18].substring(0, daten[18].lastIndexOf("."))));
@@ -171,13 +277,16 @@
                 flug.setFlugzeug(bean.flugzeugSuchen(flugzeug.getHersteller(), flugzeug.getTyp()));
                 bean.datensatzEinlesen(flug);
                 zaehlerNeuerFlug++;
+
             } else {
                 flug.hinzuBuchungsdaten(buchung);
                 bean.datensatzAktualisieren(flug);
+                if (!liste.containsKey(flug.getId())) {
+                    liste.put(flug.getId(), flug);
+                }
             }
-            zaehlerDatensatz++;
         } catch (Exception e) {
-            
+
         }
     }
 %>
